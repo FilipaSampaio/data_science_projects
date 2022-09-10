@@ -1,0 +1,117 @@
+---
+title: ""
+format: html
+editor: visual
+---
+
+## Palmer penguins EDA 🐧
+
+Original data and source information is available [here](https://allisonhorst.github.io/palmerpenguins/).
+
+#### Import data
+
+```{r}
+#| output: false
+# import libraries
+library(janitor)
+library(tidyverse)
+library(factoextra)
+
+#import data
+install.packages('palmerpenguins', repos = "http://cran.us.r-project.org")
+library(palmerpenguins)
+data(package = 'palmerpenguins')
+
+```
+
+#### Introduction to dataset
+
+There are two datasets in this data. We are going to use the larger dataset `penguins_raw` which contains all the variables and original names.
+
+```{r}
+head(penguins_raw)
+```
+
+First we are going to look at the dataset to understand the variables and do some data cleaning.
+
+```{r}
+# clean dataframe column names
+penguins_raw <- clean_names(penguins_raw)
+
+# check column names to identify variables of interest
+colnames(penguins_raw)
+```
+
+#### Species
+
+```{r}
+# how many species are in our dataset?
+unique(penguins_raw$species) # unique values
+
+# simplify species names
+penguins_raw <- penguins_raw %>%
+  mutate(species = recode(species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie",
+                          "Gentoo penguin (Pygoscelis papua)" = "Gentoo",
+                          "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap"))
+```
+
+![Here they are! Left to right: Adélie, Chinstrap and Gentoo penguins (images credit: nationalgeographic.com).](images/penguins.png)
+
+```{r}
+# check sex variable
+unique(penguins_raw$sex) 
+penguins_raw$sex <- tolower(penguins_raw$sex) # convert to lower case
+```
+
+#### Location
+
+```{r}
+# check region variables
+penguins_raw %>% 
+  group_by(species, region, island) %>% 
+  tally()
+```
+
+Data for these penguin species have been recorded for three islands (Biscoe, Dream and Torgensen) in the Anvers region. Adélie penguins occur in all three islands, and it is the only species with data recorded in Torgensen. The data collectors found Adélie and Chinstrap penguins in Dream island, and Adélie and Gentoo penguins in Biscoe.
+
+#### Body mass
+
+Let's compare body mass between the three species and see how it varies between male and female penguins (note: NA are samples for which sex was not recorded).
+
+```{r}
+#| warning: false
+ggplot(penguins_raw, aes(x=species, y=body_mass_g, fill=sex)) + 
+  geom_boxplot() +
+    xlab("Species") + ylab("Body mass (g)")
+```
+
+In general for all species males tend to have larger mass (i.e., they are heavier) than female penguins, and Gentoo penguins are the larger species of the three.
+
+#### Principal components analysis (PCA)
+
+```{r}
+# select numerical variables only
+data_num <- select_if(penguins_raw, is.numeric)             # Subset numeric columns with dplyr
+
+# remove sample_number column
+data_num = select(data_num, -c(sample_number))
+
+data_num
+```
+
+```{r}
+# only keep rows without missing data
+data_num_complete <- data_num[complete.cases(data_num), ]
+```
+
+```{r}
+# PCA
+pc <- prcomp(data_num_complete,
+             center = TRUE,
+            scale. = TRUE)
+attributes(pc)
+```
+
+```{r}
+
+```
