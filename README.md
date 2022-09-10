@@ -1,8 +1,12 @@
 # Data Science Projects
 
-This is a repository containing portfolio of data science projects completed by me presented in the form of R markdown files.
+This is a repository containing a portfolio of data science projects completed by me, and presented in the form of Quarto files.
 
 
-### Data Analysis and Visualisation
+### Data Analysis and visualisation
 
-- Palmer penguins: Exploratory data analysis of [palmer penguins dataset](https://allisonhorst.github.io/palmerpenguins/) to infer which morphological characters explain differences between the different penguin species.
+<img src="images/penguin_sticker.png"  width="20%" height="20%">
+
+- [Palmer penguins]((https://github.com/FilipaSampaio/data_science_projects/palmer/palmer_penguins.html): Exploratory data analysis of [palmer penguins dataset](https://allisonhorst.github.io/palmerpenguins/) to infer which morphological characters explain differences between the different penguin species.
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
